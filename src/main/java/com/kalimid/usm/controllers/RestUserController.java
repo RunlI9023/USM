@@ -1,7 +1,9 @@
 package com.kalimid.usm.controllers;
 
 import com.kalimid.usm.entities.User;
+import com.kalimid.usm.entities.UserSubscriptions;
 import com.kalimid.usm.repositories.UserRepository;
+import com.kalimid.usm.repositories.UserSubRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
@@ -16,13 +18,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/")
+//@RequestMapping("/users")
 public class RestUserController {
     
     private final UserRepository userRepository;
+    private final UserSubRepository userSubRepository;
     
-    public RestUserController(UserRepository userRepository) {
+    public RestUserController(UserRepository userRepository, UserSubRepository userSubRepository) {
         this.userRepository = userRepository;
+        this.userSubRepository = userSubRepository;
     }
     
     @GetMapping("/users")
@@ -52,4 +56,20 @@ public class RestUserController {
         userRepository.deleteById(id);
     }
     
+    @GetMapping("/users/{id}/subscriptions")
+    Iterable<UserSubscriptions> getUserSubscriptionsById(@PathVariable Long id) {
+        return userSubRepository.findAllById(id);
+    }
+    
+    @PostMapping("/users/{id}")
+    UserSubscriptions saveUserSub(@PathVariable Long id, @RequestBody UserSubscriptions userSub) {
+        Optional<User> user = userRepository.findById(id);
+        user.get().getSubscriptions().add(userSub);
+        return userSubRepository.save(userSub);
+    }
+    
+    @DeleteMapping("/users/{id}/subscriptions/{sub_id}")
+    public void deleteUserSub(@PathVariable Long sub_id) {
+        userSubRepository.deleteById(sub_id);
+    }
 }
