@@ -1,4 +1,4 @@
-package com.kalimid.usm;
+package com.kalimid.usm.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,5 +1,7 @@
-package com.kalimid.usm;
+package com.kalimid.usm.controllers;
 
+import com.kalimid.usm.entities.User;
+import com.kalimid.usm.repositories.UserRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
@@ -38,7 +40,7 @@ public class RestUserController {
         return userRepository.save(user);
     }
     
-    @PutMapping("/{id}")
+    @PutMapping("/users/{id}")
     ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
         return (!userRepository.existsById(id))
         ? new ResponseEntity<>(userRepository.save(user), HttpStatus.CREATED) 

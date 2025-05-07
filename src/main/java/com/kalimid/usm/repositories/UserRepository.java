@@ -1,5 +1,6 @@
-package com.kalimid.usm;
+package com.kalimid.usm.repositories;
 
+import com.kalimid.usm.entities.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
 
