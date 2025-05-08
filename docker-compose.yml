@@ -8,8 +8,6 @@ services:
             POSTGRES_PASSWORD: kalimid 
         ports:  
             - '5432:5432'
-#        networks:  
-#            - spring-boot-network  
     app:  
         build: .  
         ports:  
@@ -20,6 +18,4 @@ services:
             SPRING_DATASOURCE_PASSWORD: kalimid
             SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
         depends_on:  
-            - db  
-#        networks:  
-#            - spring-boot-network 
+            - db
