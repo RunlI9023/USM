@@ -1,4 +1,4 @@
-# User Subscriptions Managing Microservice (USM)
+# User Subscriptions Microservice (USM)
 Микросервис на Spring Boot 3, предоставляющий REST API для управления пользователями и их подписками на сервисы.
 
 Эндпоинты:
