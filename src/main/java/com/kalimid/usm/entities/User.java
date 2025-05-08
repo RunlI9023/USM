@@ -1,6 +1,7 @@
 package com.kalimid.usm.entities;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -9,7 +10,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -18,12 +18,13 @@ import java.util.List;
 public class User {
     
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(name="id")
     private Long id;
     private String name;
     @OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
     @JoinColumn(name = "users_id")
-    private List<UserSubscriptions> subscriptions = new ArrayList<UserSubscriptions>();
+    private List<UserSubscriptions> subscriptions;
 
     public User() {
     }
@@ -32,11 +33,6 @@ public class User {
         this.id = id;
         this.name = name;
         this.subscriptions = subscriptions;
-    }
-    
-    public User(Long id, String name) {
-        this.id = id;
-        this.name = name;
     }
 
     public Long getId() {

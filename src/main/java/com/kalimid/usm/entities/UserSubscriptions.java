@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 public class UserSubscriptions {
     
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long subID;
     private String name;
 

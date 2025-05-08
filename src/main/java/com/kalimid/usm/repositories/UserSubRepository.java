@@ -10,5 +10,5 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface UserSubRepository extends CrudRepository<UserSubscriptions, Long> {
-    //List<UserSubscriptions> findTop3ByName();
+    List<UserSubscriptions> findTop3ByName(String name);
 }

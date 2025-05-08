@@ -7,7 +7,6 @@ import com.kalimid.usm.repositories.UserSubRepository;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,19 +40,21 @@ public class RestUserController {
     }
     
     @PostMapping("/users")
-    User saveUser(@RequestBody User user) {
-        logger.info("Создан новый пользователь");
-        return userRepository.save(user);
-        
+    public void saveUser(@RequestBody User user) {
+        userRepository.save(user);
+        logger.info("Создан новый пользователь {}", user.getName());
     }
     
     @PutMapping("/users/{id}")
-    ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        logger.info("Обновление пользователя");
-        return (userRepository.existsById(id))
-        ? new ResponseEntity<>(userRepository.save(user), HttpStatus.OK)
-        : new ResponseEntity<>(userRepository.save(user), HttpStatus.CREATED);
-}
+    ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) { 
+        User updateUser = userRepository.findById(id).orElseThrow();
+        logger.info("Обновление пользователя {} на {}", updateUser.getName(),user.getName());
+        updateUser.setId(user.getId());
+        updateUser.setName(user.getName());
+        userRepository.save(updateUser);
+        
+        return ResponseEntity.ok(updateUser);
+    }
     
     @DeleteMapping("/users/{id}")
     public void deleteUser(@PathVariable Long id) {
@@ -68,21 +69,22 @@ public class RestUserController {
     }
     
     @PostMapping("/users/{id}/subscriptions")
-    UserSubscriptions saveUserSub(@PathVariable Long id, @RequestBody UserSubscriptions userSub) {
-        Optional<User> user = userRepository.findById(id);
-        user.get().getSubscriptions().add(userSub);
-        logger.info("Добавлена новая подписка пользователю {}", user.get().getName());
-        return userSubRepository.save(userSub);
+    public void saveUserSub(@PathVariable Long id, @RequestBody UserSubscriptions userSub) {
+        User user = userRepository.findById(id).orElseThrow();
+        user.getSubscriptions().add(userSub);
+        userRepository.save(user);
+        logger.info("Добавлена новая подписка {} пользователю {}", userSub.getName(), user.getName());
     }
     
     @DeleteMapping("/users/{id}/subscriptions/{sub_id}")
     public void deleteUserSub(@PathVariable Long id, @PathVariable Long sub_id) {
-        logger.info("Подписка для пользователя {} удалена", userRepository.findById(id).get().getName());
+        logger.info("Подписка на {} для пользователя {} удалена", userSubRepository.findById(sub_id).get().getName(),userRepository.findById(id).get().getName());
         userSubRepository.deleteById(sub_id);
     }
     
     @GetMapping("/subscriptions/top")
     Iterable<UserSubscriptions> getTopSubscriptions() {
+        
         return userSubRepository.findAll();
     }
 }
