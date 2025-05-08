@@ -7,7 +7,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
@@ -19,8 +18,8 @@ import java.util.List;
 public class User {
     
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
-    private Long ID;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long id;
     private String name;
     @OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
     @JoinColumn(name = "users_id")
@@ -28,28 +27,24 @@ public class User {
 
     public User() {
     }
-
-    public User(Long ID, String name, List<UserSubscriptions> subscriptions) {
-        this.ID = ID;
+    
+    public User(Long id, String name, List<UserSubscriptions> subscriptions) {
+        this.id = id;
         this.name = name;
         this.subscriptions = subscriptions;
     }
     
-    public User(Long ID, String name) {
-        this.ID = ID;
-        this.name = name;
-    }
-    
-    public User(String name) {
+    public User(Long id, String name) {
+        this.id = id;
         this.name = name;
     }
 
-    public Long getID() {
-        return ID;
+    public Long getId() {
+        return id;
     }
 
-    public void setID(Long ID) {
-        this.ID = ID;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

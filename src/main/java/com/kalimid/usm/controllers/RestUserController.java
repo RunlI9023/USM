@@ -4,7 +4,6 @@ import com.kalimid.usm.entities.User;
 import com.kalimid.usm.entities.UserSubscriptions;
 import com.kalimid.usm.repositories.UserRepository;
 import com.kalimid.usm.repositories.UserSubRepository;
-import java.util.List;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-//@RequestMapping("/users")
 public class RestUserController {
     
     private final UserRepository userRepository;
@@ -39,16 +36,16 @@ public class RestUserController {
         return userRepository.findById(id);
     }
     
-    @PostMapping
+    @PostMapping("/users")
     User saveUser(@RequestBody User user) {
         return userRepository.save(user);
     }
     
     @PutMapping("/users/{id}")
     ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        return (!userRepository.existsById(id))
-        ? new ResponseEntity<>(userRepository.save(user), HttpStatus.CREATED) 
-        : new ResponseEntity<>(userRepository.save(user), HttpStatus.OK);
+        return (userRepository.existsById(id))
+        ? new ResponseEntity<>(userRepository.save(user), HttpStatus.OK) 
+        : new ResponseEntity<>(userRepository.save(user), HttpStatus.CREATED);
 }
     
     @DeleteMapping("/users/{id}")
@@ -58,10 +55,11 @@ public class RestUserController {
     
     @GetMapping("/users/{id}/subscriptions")
     Iterable<UserSubscriptions> getUserSubscriptionsById(@PathVariable Long id) {
-        return userSubRepository.findAllById(id);
+        Optional<User> user = userRepository.findById(id);
+        return user.get().getSubscriptions();
     }
     
-    @PostMapping("/users/{id}")
+    @PostMapping("/users/{id}/subscriptions")
     UserSubscriptions saveUserSub(@PathVariable Long id, @RequestBody UserSubscriptions userSub) {
         Optional<User> user = userRepository.findById(id);
         user.get().getSubscriptions().add(userSub);
@@ -69,7 +67,12 @@ public class RestUserController {
     }
     
     @DeleteMapping("/users/{id}/subscriptions/{sub_id}")
-    public void deleteUserSub(@PathVariable Long sub_id) {
+    public void deleteUserSub(@PathVariable Long id, @PathVariable Long sub_id) {
         userSubRepository.deleteById(sub_id);
+    }
+    
+    @GetMapping("/subscriptions/top")
+    Iterable<UserSubscriptions> getTopSubscriptions() {
+        return userSubRepository.findAll();
     }
 }

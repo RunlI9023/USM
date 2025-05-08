@@ -8,5 +8,4 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface UserRepository extends CrudRepository<User, Long> {
-    Iterable<UserSubscriptions> findByID(Long ID);
 }

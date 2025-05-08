@@ -11,46 +11,31 @@ import jakarta.persistence.Table;
 public class UserSubscriptions {
     
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
-    private Long sub_id;
-    private String subName;
-    private Sub sub;
-    public enum Sub {YOUTUBE_PREMIUN, VK_MUSIC, NETFLIX, YANDEX_PLUS};
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long subID;
+    private String name;
 
     public UserSubscriptions() {
     }
-
-    public UserSubscriptions(Long sub_id, String subName, Sub sub) {
-        this.sub_id = sub_id;
-        this.subName = subName;
-        this.sub = sub;
+    
+    public UserSubscriptions(Long subID, String name) {
+        this.subID = subID;
+        this.name = name;
     }
 
-    public UserSubscriptions(String subName) {
-        this.subName = subName;
+    public Long getSubID() {
+        return subID;
     }
 
-    public Long getSubId() {
-        return sub_id;
+    public void setSubID(Long subID) {
+        this.subID = subID;
     }
 
-    public void setId(Long sub_id) {
-        this.sub_id = sub_id;
+    public String getName() {
+        return name;
     }
 
-    public String getSubName() {
-        return subName;
-    }
-
-    public void setSubName(String subName) {
-        this.subName = subName;
-    }
-
-    public Sub getSub() {
-        return sub;
-    }
-
-    public void setSub(Sub sub) {
-        this.sub = sub;
+    public void setName(String name) {
+        this.name = name;
     }
 }
