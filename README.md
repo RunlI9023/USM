@@ -1,4 +1,4 @@
-# User Subscriptions Microservice (USM)
+# [User Subscriptions Microservice (USM)](https://github.com/RunlI9023/USM)
 Микросервис на Spring Boot 3, предоставляющий REST API для управления пользователями и их подписками на сервисы.
 ## **Описание эндпоинтов:**
 ### **1. Создание пользователя**
