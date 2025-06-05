@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name="subscriptions")
@@ -13,6 +15,8 @@ public class UserSubscriptions {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long subID;
+    @NotNull
+    @Size(min = 1, max = 50, message = "максимальная длина 50 букв")
     private String name;
 
     public UserSubscriptions() {
